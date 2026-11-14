@@ -1,0 +1,7 @@
+# reference material from the original post (not ours to redistribute) and local planning notes
+refs/
+PLAN.md
+# rendered clips are large; regenerate with tools/record.py
+video/
+__pycache__/
+.DS_Store

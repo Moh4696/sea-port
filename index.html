@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Port of Halvard</title>
+<style>
+  :root { --ink: #eef2f3; --dim: rgba(238, 242, 243, 0.62); --line: rgba(238, 242, 243, 0.22); --panel: rgba(10, 18, 24, 0.42); --accent: #e8a13a; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #0b1318; overflow: hidden; color: var(--ink);
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+  canvas#view { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  #fade { position: fixed; inset: 0; background: #05090c; opacity: 0; pointer-events: none; }
+  .hud { position: fixed; pointer-events: none; transition: opacity 0.5s ease; }
+  body.nohud .hud { opacity: 0; }
+  #title { left: 28px; top: 24px; text-shadow: 0 1px 12px rgba(0, 0, 0, 0.45); }
+  #title h1 { margin: 0; font-size: 15px; font-weight: 700; letter-spacing: 0.34em; }
+  #title p { margin: 7px 0 0; font-size: 11px; letter-spacing: 0.16em; color: var(--dim); font-variant-numeric: tabular-nums; }
+  #shotname { left: 28px; bottom: 84px; font-size: 11px; letter-spacing: 0.22em; color: var(--dim); text-transform: uppercase; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5); }
+  #shotname b { color: var(--ink); font-weight: 600; margin-right: 10px; font-variant-numeric: tabular-nums; }
+  #bar { left: 28px; right: 28px; bottom: 24px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  #bar > * { pointer-events: auto; }
+  button { font: inherit; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink);
+    background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 9px 15px; cursor: pointer;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: background 0.2s, border-color 0.2s, color 0.2s; }
+  button:hover { border-color: rgba(238, 242, 243, 0.6); }
+  button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  button.on { background: rgba(238, 242, 243, 0.92); color: #0c161c; border-color: transparent; }
+  .gap { flex: 1; }
+  .sun { display: flex; align-items: center; gap: 10px; background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); }
+  input[type=range] { -webkit-appearance: none; appearance: none; width: 130px; height: 2px; background: var(--line); border-radius: 2px; outline: none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 0; }
+  input[type=range]::-moz-range-thumb { width: 14px; height: 14px; border-radius: 50%; background: var(--accent); cursor: pointer; border: 0; }
+  #hint { right: 28px; top: 26px; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); text-align: right; line-height: 1.8; text-shadow: 0 1px 10px rgba(0, 0, 0, 0.5); }
+  #loading { position: fixed; inset: 0; display: grid; place-items: center; background: #0b1318; transition: opacity 0.9s ease; z-index: 5; }
+  #loading.done { opacity: 0; pointer-events: none; }
+  #loading div { text-align: center; }
+  #loading h2 { margin: 0 0 14px; font-size: 14px; letter-spacing: 0.4em; font-weight: 700; }
+  #loading p { margin: 0; font-size: 11px; letter-spacing: 0.2em; color: var(--dim); text-transform: uppercase; min-width: 260px; }
+  @media (max-width: 720px) { #hint, .sun span { display: none; } #shotname { bottom: 120px; } }
+</style>
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/three.module.js", "three/addons/": "./vendor/three/addons/" } }
+</script>
+</head>
+<body>
+<canvas id="view"></canvas>
+<div id="fade"></div>
+<div id="title" class="hud"><h1>PORT OF HALVARD</h1><p>CONTAINER TERMINAL 2 &nbsp;·&nbsp; BERTH 7 &nbsp;·&nbsp; <span id="clock">--:--</span></p></div>
+<div id="hint" class="hud">Drag to look &nbsp;·&nbsp; scroll to zoom<br>H hides the interface</div>
+<div id="shotname" class="hud"><b id="shotno">01</b><span id="shotlabel">Harbour approach</span></div>
+<div id="bar" class="hud">
+  <span id="shots" style="display:contents"></span>
+  <button id="free">Free camera</button>
+  <span class="gap"></span>
+  <label class="sun"><span>Sun</span><input id="sun" type="range" min="5" max="58" step="0.5" value="30" aria-label="Sun elevation"></label>
+</div>
+<div id="loading"><div><h2>PORT OF HALVARD</h2><p id="loadmsg">Raising the cranes</p></div></div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>
